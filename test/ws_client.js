@@ -1,6 +1,9 @@
 const WebSocket = require('ws');
-const netbus = require("../netbus/netbus");
+const client = new WebSocket('ws://localhost:6080');
 
-const ws = new WebSocket('ws://localhost:6080');
+client.on("open",()=>{
+	console.log("connect success")
+	client.send('{name:"guanyuwei"}')
+})
 
 
