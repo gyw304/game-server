@@ -17,8 +17,7 @@ var netbus = {
 			global_session_list[global_session_key] = session;
 			global_session_key = global_session_key;
 			global_session_key++;
-			
-			log.info(global_session_key)
+
 			
 			session.on("close",()=>{
 				
@@ -27,6 +26,8 @@ var netbus = {
 				
 			})
 			session.on("message",(data)=>{
+				
+				
 				
 			})
 		})
