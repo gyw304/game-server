@@ -20,10 +20,10 @@ var netbus = {
 			log.info(`session comming`)
 			
 			global_session_list[global_session_key] = session;
-			global_session_key = global_session_key;
-			global_session_key++;
+			session.session_key = global_session_key;
+			global_session_key ++;			
 			
-			session.on("close",(session)=>{
+			session.on("close",()=>{
 				
 				service_manage.disconnect(session)
 				
@@ -32,6 +32,8 @@ var netbus = {
 					delete global_session_list[session.session_key]; // 把这个key, value从 {}里面删除
 					session.session_key = null;
 				}
+
+				
 			})
 			session.on("error",(err)=>{
 				log.error(`session 出错`,err)
