@@ -12,4 +12,8 @@ client.on("open",()=>{
 	client.send(JSON.stringify(cmd))
 })
 
+client.on("message",(data)=>{
+	console.log(data)
+})
+
 

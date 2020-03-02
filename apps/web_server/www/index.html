@@ -2,9 +2,48 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title></title>
+		<title>聊天室</title>
+		<script src="js/lib/vue.min.js"></script>
 	</head>
 	<body>
-		helloworld!
+		
+		<div id="app">
+			
+			
+		  
+		</div>
+		
+		<script>
+			const app = new Vue({
+			  data : {
+				
+			  },
+			  created : function(){
+				  
+				  var ws = new WebSocket("ws://127.0.0.1:6080");
+				  
+				  ws.onopen = function() {
+				  	
+				  	var cmd = {
+				  		"service_id" : 2,
+				  		"command_id" : 1,
+				  		"data" : {
+				  			'uname' : 'guanyuwei_' + parseInt(Math.random() * 1000)
+				  		}
+				  	}
+				  	
+				  	ws.send(JSON.stringify(cmd))
+				   
+				  };
+				  
+				  
+				  ws.onmessage = function(data){
+				  	console.log(data.data)
+				  }
+				 
+			  }
+			}).$mount('#app')
+		</script>
+	
 	</body>
 </html>

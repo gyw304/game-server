@@ -1,5 +1,4 @@
 var log = require("../utils/log")
-var search_key = require("../utils/search_key")
 /* 
 	register_service : 注册服务
 	disconnect : 玩家断开连接

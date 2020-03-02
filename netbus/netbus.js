@@ -6,7 +6,6 @@ var global_session_list = {};
 var global_session_key = 1;
 
 var netbus = {
-	session : null,
 	start_ws_server : (ip,port) => {
 		var ws_server = new ws.Server({
 			host : ip,
@@ -21,7 +20,9 @@ var netbus = {
 			
 			global_session_list[global_session_key] = session;
 			session.session_key = global_session_key;
-			global_session_key ++;			
+			global_session_key ++;
+			
+			session.fire = fire;
 			
 			session.on("close",()=>{
 				
@@ -53,12 +54,15 @@ var netbus = {
 			session.send('服务器崩溃')
 		})
 	},
-	session_send : (session,cmd) => {
-		session.send(cmd)
-	},
+	
 	session_close : (session) => {
 		session.close()
 	}
+}
+
+
+function fire(cmd){
+	this.send(cmd)
 }
 
 

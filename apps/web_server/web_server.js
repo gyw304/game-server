@@ -11,6 +11,9 @@ var app = express();
 var port = parseInt(process.argv[2]);
 var path = require("path");
 process.chdir("./apps/web_server")
+
+log.info(path.join(process.cwd(),"www"))
+
 app.use(express.static(path.join(process.cwd(),"www")));
 
 app.listen(port)
