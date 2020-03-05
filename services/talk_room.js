@@ -6,7 +6,8 @@
 var log = require("../utils/log")
 
 var command = {
-	'enter' : 1
+	'enter' : 1,
+	'chat' : 2
 }
 
 var room = {}
@@ -31,13 +32,7 @@ var service = {
 				uinfo : _data.data
 			}
 			
-			//session.fire(`${_data.data.uname} 欢迎您来到聊天室`);
-			
-			
-			for(key in room){
-				room[key].session.fire(`${_data.data.uname} 欢迎您来到聊天室`);
-			}
-
+			broadcast(command.enter,room)
 			
 			break;
 		}
@@ -46,9 +41,10 @@ var service = {
 	},
 	player_disconnet : (session) => {
 		
-		for(key in room){
-			room[key].session.fire(`${room[session.session_key].uinfo.uname} 离开了聊天室`);
-		}
+		// for(key in room){
+		// 	room[key].session.fire(`${room[session.session_key].uinfo.uname} 离开了聊天室`);
+		// }
+		
 		
 		log.info(`${service.service_name} service player_disconnet at ${session.session_key}`)
 		
@@ -56,9 +52,23 @@ var service = {
 			delete room[session.session_key];
 		}
 		
+		broadcast(command.enter,room)
+		
 		console.log(room)
 
 		
+	}
+}
+
+function broadcast(type,data){
+	
+	var msg = JSON.stringify({
+		type: type,
+		data: data
+	});
+	
+	for(key in room){
+		room[key].session.fire(msg);
 	}
 }
 

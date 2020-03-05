@@ -57,7 +57,8 @@ var netbus = {
 	
 	session_close : (session) => {
 		session.close()
-	}
+	},
+	
 }
 
 

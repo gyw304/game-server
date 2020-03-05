@@ -4,46 +4,111 @@
 		<meta charset="utf-8">
 		<title>聊天室</title>
 		<script src="js/lib/vue.min.js"></script>
+		<style>
+			*{
+				margin:0;
+				padding:0;
+			}
+			html,body,#app{
+				height:100%;
+			}
+			
+			#app{
+				display: flex;
+			}
+			.chat{
+				flex:1;
+				border-right: 1px solid #000;
+				display: flex;
+				flex-direction: column;
+			}
+			
+			.msg{
+				flex:1;
+				overflow-y:auto;
+			}
+			
+			.input{
+				height:50px;
+				display: flex;
+			}
+			
+			.input input{
+				height:50px;
+				border: none;
+				background-color: brown;
+				flex:1;
+				color:#fff;
+				text-indent: 1rem;
+			}
+			
+			.input button{
+				width:100px;
+				height:50px;
+			}
+			
+			.users{
+				width:200px;
+			}
+			
+			
+			
+		</style>
 	</head>
 	<body>
-		
+
 		<div id="app">
 			
+			<div class="chat">
+				<div class="msg">
+					
+				</div>
+				<div class="input"><input type="text"><button>发送</button></div>
+			</div>
 			
-		  
+			<div class="users">
+				<h1  v-for="(value, key, index) in users">{{value.uinfo.uname}}</h1>
+			</div>
+
 		</div>
-		
+
 		<script>
 			const app = new Vue({
-			  data : {
-				
-			  },
-			  created : function(){
-				  
-				  var ws = new WebSocket("ws://127.0.0.1:6080");
-				  
-				  ws.onopen = function() {
-				  	
-				  	var cmd = {
-				  		"service_id" : 2,
-				  		"command_id" : 1,
-				  		"data" : {
-				  			'uname' : 'guanyuwei_' + parseInt(Math.random() * 1000)
-				  		}
-				  	}
-				  	
-				  	ws.send(JSON.stringify(cmd))
-				   
-				  };
-				  
-				  
-				  ws.onmessage = function(data){
-				  	console.log(data.data)
-				  }
-				 
-			  }
+				data: {
+					
+					chat : [],
+					users : {}
+
+				},
+				created: function() {
+					
+					var that = this;
+
+					var ws = new WebSocket("ws://127.0.0.1:6080");
+					
+					ws.onopen = function(){
+						var cmd = {
+							"service_id": 2,
+							"command_id": 1,
+							"data": {
+								'uname': 'user_' + parseInt(Math.random() * 1000)
+							}
+						}
+						
+						ws.send(JSON.stringify(cmd))
+					}
+					
+					ws.onmessage = function(message){
+						
+						var data = message.data;
+						var msg = JSON.parse(data)
+						
+						that.users = msg.data;
+
+					}
+				}
 			}).$mount('#app')
 		</script>
-	
+
 	</body>
 </html>
